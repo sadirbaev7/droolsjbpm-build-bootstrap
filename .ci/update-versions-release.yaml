@@ -1,0 +1,29 @@
+version: "2.1"
+
+dependencies: ./release-project-dependencies.yaml
+
+pre: |
+  export COMMIT_COMMAND=git commit -am ${{ env.COM_MSG }}
+  export CREATE_COMMAND=git checkout -b ${{ env.R_BRANCH }}
+  export PUSH_COMMAND=git push origin ${{ env.R_BRANCH }}
+default:
+  build-command:
+    current: |
+      ${{ env.CREATE_COMMAND }}
+      ${{ env.WORKSPACE }}/bc/kiegroup_droolsjbpm-build-bootstrap/script/release/update-versions-build-chain.sh ${{ env.KIE_VERSION }}
+      ${{ env.COMMIT_COMMAND }}
+      ${{ env.PUSH_COMMAND }}
+build:
+  - project: kiegroup/lienzo-core
+    build-command:
+      before:
+        current:
+          ${{ env.WORKSPACE }}/bc/kiegroup_droolsjbpm-build-bootstrap/script/release/eraseM2.sh ${{ env.MAVEN_DIR }}
+  - project: kiegroup/kie-docs
+    build-command:
+      current: |
+        ${{ env.CREATE_COMMAND }}
+        ${{ env.WORKSPACE }}/bc/kiegroup_droolsjbpm-build-bootstrap/script/release/update-versions-build-chain.sh ${{ env.KIE_VERSION }}
+        ${{ env.COMMIT_COMMAND }}
+        ${{ env.PUSH_COMMAND }}
+
