@@ -487,7 +487,13 @@
 
     <version.lock-treatment-tool>^0.2.2</version.lock-treatment-tool>
   </properties>
-
+  <distributionManagement>
+    <repository>
+      <id>github</id>
+      <name>GitHub Packages</name>
+      <url>https://maven.pkg.github.com/sadirbaev7/droolsjbpm-build-bootstrap</url>
+    </repository>
+  </distributionManagement>
   <repositories>
     <repository>
       <!-- Duplicating the Maven Central repository here (as it is already coming from Super POM) makes the build much faster,
